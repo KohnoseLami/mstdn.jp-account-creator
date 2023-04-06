@@ -15,6 +15,7 @@ const proxy = {
 }
 
 const target = '1';
+const threads = 50;
 
 const follow = async (i) => {
     const account = await fs.promises.readFile(`accounts/${i}`).then(JSON.parse);
@@ -42,7 +43,7 @@ const follow = async (i) => {
 
 const main = async () => {
     const accounts = await fs.promises.readdir('accounts');
-    const limit = pLimit(50);
+    const limit = pLimit(threads);
     await Promise.all(accounts.map((i) => limit(() => retry(() => follow(i)))));
 }
 
